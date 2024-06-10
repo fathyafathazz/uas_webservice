@@ -1,0 +1,205 @@
+openapi: 3.0.0
+info:
+  title: UasWebservice
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+paths:
+  /regis:
+    post:
+      tags:
+        - default
+      summary: UserRegistration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                username: fathfath
+                password_hash: fathadmin1999
+                role: admin
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /login:
+    post:
+      tags:
+        - default
+      summary: UserLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                username: fathfath
+                password_hash: fathadmin1999
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /artists:
+    get:
+      tags:
+        - default
+      summary: Artist
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - default
+      summary: ArtistsPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: D.O
+                genre: ballad
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /artists/{id}:
+    put:
+      tags:
+        - default
+      summary: ArtistsUpdate
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          example: 3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: D.O
+                genre: Rock
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - default
+      summary: ArtistDelete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          example: 1
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /albums:
+    get:
+      tags:
+        - default
+      summary: Album
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - default
+      summary: AlbumPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Shut Down
+                artist_id: 2
+                price: 350000
+                year: 2022
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /albums/{id}:
+    put:
+      tags:
+        - default
+      summary: AlbumUpdate
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          example: 2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Shut Down
+                artist_id: 2
+                price: 750000
+                year: 2022
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - default
+      summary: AlbumDelete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          example: 1
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
