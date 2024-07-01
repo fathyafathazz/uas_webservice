@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"uas_musik/controller/auth"
-	"uas_musik/controller/artist"
-	"uas_musik/controller/album"
-	"uas_musik/database"
 	"log"
 	"net/http"
+	"uas_musik/controller/album"
+	"uas_musik/controller/artist"
+	"uas_musik/controller/auth"
+	"uas_musik/database"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
@@ -22,13 +22,14 @@ func main() {
 	router.HandleFunc("/regis", auth.Registration).Methods("POST")
 	router.HandleFunc("/login", auth.Login).Methods("POST")
 
-	//Router handler artist
+
+	// Router handler artist
 	router.HandleFunc("/artists", artist.GetArtist).Methods("GET")
 	router.HandleFunc("/artists", auth.JWTAuth(artist.PostArtist)).Methods("POST")
 	router.HandleFunc("/artists/{id}", auth.JWTAuth(artist.PutArtist)).Methods("PUT")
 	router.HandleFunc("/artists/{id}", auth.JWTAuth(artist.DeleteArtist)).Methods("DELETE")
 
-	//Router handler Album
+	// Router handler Album
 	router.HandleFunc("/albums", album.GetAlbum).Methods("GET")
 	router.HandleFunc("/albums", auth.JWTAuth(album.PostAlbum)).Methods("POST")
 	router.HandleFunc("/albums/{id}", auth.JWTAuth(album.PutAlbum)).Methods("PUT")

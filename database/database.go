@@ -8,7 +8,12 @@ import (
 )
 
 var DB *sql.DB
-
+type User struct {
+    ID           uint   
+    Username     string
+    PasswordHash string
+    Role         string
+}
 func InitDB() {
 	var err error
 	connStr := "root:p3ws@tcp(localhost:3306)/dbwebservice"
