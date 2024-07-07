@@ -1,6 +1,7 @@
 package artist
 
 import (
+	"database/sql"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -36,6 +37,36 @@ func GetArtist(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(artists)
+}
+
+// GetArtistByID handles GET requests to fetch a single album by its ID
+func GetArtistByID(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	idStr, ok := vars["id"]
+	if !ok {
+		http.Error(w, "ID not provided", http.StatusBadRequest)
+		return
+	}
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	var artist artist.Artist
+	query := "SELECT * FROM artists WHERE id = ?"
+	err = database.DB.QueryRow(query, id).Scan(&artist.ArtistId, &artist.Name, &artist.Genre)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Album not found", http.StatusNotFound)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(artist)
 }
 
 func PostArtist(w http.ResponseWriter, r *http.Request) {

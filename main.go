@@ -24,6 +24,7 @@ func main() {
 
 	// Router handler artist
 	router.HandleFunc("/artists", artist.GetArtist).Methods("GET")
+	router.HandleFunc("/artists/{id}", artist.GetArtistByID).Methods("GET")
 	router.HandleFunc("/artists", auth.JWTAuth(artist.PostArtist)).Methods("POST")
 	router.HandleFunc("/artists/{id}", auth.JWTAuth(artist.PutArtist)).Methods("PUT")
 	router.HandleFunc("/artists/{id}", auth.JWTAuth(artist.DeleteArtist)).Methods("DELETE")
