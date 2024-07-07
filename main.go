@@ -22,7 +22,6 @@ func main() {
 	router.HandleFunc("/regis", auth.Registration).Methods("POST")
 	router.HandleFunc("/login", auth.Login).Methods("POST")
 
-
 	// Router handler artist
 	router.HandleFunc("/artists", artist.GetArtist).Methods("GET")
 	router.HandleFunc("/artists", auth.JWTAuth(artist.PostArtist)).Methods("POST")
@@ -31,15 +30,18 @@ func main() {
 
 	// Router handler Album
 	router.HandleFunc("/albums", album.GetAlbum).Methods("GET")
+	router.HandleFunc("/albums/{id}", album.GetAlbumByID).Methods("GET")
 	router.HandleFunc("/albums", auth.JWTAuth(album.PostAlbum)).Methods("POST")
 	router.HandleFunc("/albums/{id}", auth.JWTAuth(album.PutAlbum)).Methods("PUT")
 	router.HandleFunc("/albums/{id}", auth.JWTAuth(album.DeleteAlbum)).Methods("DELETE")
 
+	// Mengaktifkan CORS
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
-		AllowedHeaders: []string{"Content-Type", "Authorization"},
-		Debug: true,
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+        Debug: true,
 	})
 
 	handler := c.Handler(router)

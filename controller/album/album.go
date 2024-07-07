@@ -1,33 +1,36 @@
 package album
 
 import (
+	"database/sql"
 	"encoding/json"
 	"net/http"
 	"strconv"
 
 	"uas_musik/database"
-	"github.com/gorilla/mux"
 	"uas_musik/model/albums"
+
+	"github.com/gorilla/mux"
 )
 
+// GetAlbum handles GET requests to fetch all albums
 func GetAlbum(w http.ResponseWriter, r *http.Request) {
 	rows, err := database.DB.Query("SELECT * FROM albums")
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
-    defer rows.Close()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
 
-    var albums []album.Album
-    for rows.Next() {
-        var c album.Album
-        if err := rows.Scan(&c.AlbumId,&c.Title,&c.Artist_Id, &c.Price, &c.Year); err != nil {
-            http.Error(w, err.Error(), http.StatusInternalServerError)
-            return
-        }
-        albums = append(albums, c)
-    }
-	
+	var albums []album.Album
+	for rows.Next() {
+		var c album.Album
+		if err := rows.Scan(&c.AlbumId, &c.Title, &c.Artist_Id, &c.Price, &c.Year); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		albums = append(albums, c)
+	}
+
 	if err := rows.Err(); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -36,6 +39,37 @@ func GetAlbum(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(albums)
 }
 
+// GetAlbumByID handles GET requests to fetch a single album by its ID
+func GetAlbumByID(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	idStr, ok := vars["id"]
+	if !ok {
+		http.Error(w, "ID not provided", http.StatusBadRequest)
+		return
+	}
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	var album album.Album
+	query := "SELECT * FROM albums WHERE id = ?"
+	err = database.DB.QueryRow(query, id).Scan(&album.AlbumId, &album.Title, &album.Artist_Id, &album.Price, &album.Year)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Album not found", http.StatusNotFound)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(album)
+}
+
+// PostAlbum handles POST requests to create a new album
 func PostAlbum(w http.ResponseWriter, r *http.Request) {
 	var pc album.Album
 	if err := json.NewDecoder(r.Body).Decode(&pc); err != nil {
@@ -43,35 +77,28 @@ func PostAlbum(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Prepare the SQL statement for inserting a new course
-	query := `
-		INSERT INTO albums (title, artist_id, price, year) 
-		VALUES (?, ?, ?, ?)`
-
-	// Execute the SQL statement
+	query := `INSERT INTO albums (title, artist_id, price, year) VALUES (?, ?, ?, ?)`
 	res, err := database.DB.Exec(query, pc.Title, pc.Artist_Id, pc.Price, pc.Year)
 	if err != nil {
-		http.Error(w, "Failed to insert artist: "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Failed to insert album: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Get the last inserted ID
 	id, err := res.LastInsertId()
 	if err != nil {
 		http.Error(w, "Failed to retrieve last insert ID: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Return the newly created ID in the response
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"message": "Course added successfully",
+		"message": "Album added successfully",
 		"id":      id,
 	})
 }
 
+// PutAlbum handles PUT requests to update an existing album
 func PutAlbum(w http.ResponseWriter, r *http.Request) {
-	// Ambil ID dari URL
 	vars := mux.Vars(r)
 	idStr, ok := vars["id"]
 	if !ok {
@@ -84,48 +111,38 @@ func PutAlbum(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Decode JSON body
 	var pc album.Album
 	if err := json.NewDecoder(r.Body).Decode(&pc); err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)
 		return
 	}
 
-	// Prepare the SQL statement for updating the category admin
-	query := `
-		UPDATE albums 
-		SET title=?, artist_id=?, price=?, year=?
-		WHERE id=?`
-
-	// Execute the SQL statement
+	query := `UPDATE albums SET title=?, artist_id=?, price=?, year=? WHERE id=?`
 	result, err := database.DB.Exec(query, pc.Title, pc.Artist_Id, pc.Price, pc.Year, id)
 	if err != nil {
-		http.Error(w, "Failed to update albums: "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Failed to update album: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Get the number of rows affected
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
 		http.Error(w, "Failed to retrieve affected rows: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Check if any rows were updated
 	if rowsAffected == 0 {
 		http.Error(w, "No rows were updated", http.StatusNotFound)
 		return
 	}
 
-	// Return success message
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"message": "Course updated successfully",
+		"message": "Album updated successfully",
 	})
 }
 
+// DeleteAlbum handles DELETE requests to delete an album
 func DeleteAlbum(w http.ResponseWriter, r *http.Request) {
-	// Extract ID from URL
 	vars := mux.Vars(r)
 	idStr, ok := vars["id"]
 	if !ok {
@@ -138,19 +155,13 @@ func DeleteAlbum(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Prepare the SQL statement for deleting a category admin
-	query := `
-		DELETE FROM albums
-		WHERE id = ?`
-
-	// Execute the SQL statement
+	query := `DELETE FROM albums WHERE id = ?`
 	result, err := database.DB.Exec(query, id)
 	if err != nil {
 		http.Error(w, "Failed to delete album: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Check if any rows were affected
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
 		http.Error(w, "Failed to retrieve affected rows: "+err.Error(), http.StatusInternalServerError)
@@ -162,7 +173,6 @@ func DeleteAlbum(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Return the response
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message": "Album deleted successfully",
