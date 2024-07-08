@@ -1,9 +1,9 @@
 openapi: 3.0.0
 info:
-  title: UasWebservice
+  title: UasWebservice2
   version: 1.0.0
 servers:
-  - url: https://130.162.195.228/mhs714220012/
+  - url: https://130.162.195.228/mhs714220012
 components:
   securitySchemes:
     bearerAuth:
@@ -21,7 +21,7 @@ paths:
             schema:
               type: object
               example:
-                username: fathfath
+                username: marklee
                 password_hash: fathadmin1999
                 role: admin
       responses:
@@ -62,15 +62,15 @@ paths:
     post:
       tags:
         - default
-      summary: ArtistsPost
+      summary: ArtistPost
       requestBody:
         content:
           application/json:
             schema:
               type: object
               example:
-                name: D.O
-                genre: ballad
+                name: Jennie
+                genre: POP
       security:
         - bearerAuth: []
       responses:
@@ -79,24 +79,38 @@ paths:
           content:
             application/json: {}
   /artists/{id}:
-    put:
+    get:
       tags:
         - default
-      summary: ArtistsUpdate
+      summary: ArtistByID
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
           schema:
             type: integer
-          example: 3
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - default
+      summary: ArtistUpdate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
             schema:
               type: object
               example:
-                name: D.O
+                name: Mark
                 genre: Rock
       security:
         - bearerAuth: []
@@ -110,12 +124,11 @@ paths:
         - default
       summary: ArtistDelete
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
           schema:
             type: integer
-          example: 1
       security:
         - bearerAuth: []
       responses:
@@ -145,10 +158,10 @@ paths:
             schema:
               type: object
               example:
-                title: Shut Down
+                title: Kick It
                 artist_id: 2
-                price: 350000
-                year: 2022
+                price: 550000
+                year: 2021
       security:
         - bearerAuth: []
       responses:
@@ -157,24 +170,38 @@ paths:
           content:
             application/json: {}
   /albums/{id}:
+    get:
+      tags:
+        - default
+      summary: AlbumByID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
     put:
       tags:
         - default
       summary: AlbumUpdate
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
           schema:
             type: integer
-          example: 2
       requestBody:
         content:
           application/json:
             schema:
               type: object
               example:
-                title: Shut Down
+                title: Solo
                 artist_id: 2
                 price: 750000
                 year: 2022
@@ -190,12 +217,11 @@ paths:
         - default
       summary: AlbumDelete
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
           schema:
             type: integer
-          example: 1
       security:
         - bearerAuth: []
       responses:

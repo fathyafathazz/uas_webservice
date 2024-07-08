@@ -3,34 +3,35 @@ package artist
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
 	"strconv"
-	"log"
-	"fmt"
 
 	"uas_musik/database"
-	"github.com/gorilla/mux"
 	"uas_musik/model/artist"
+
+	"github.com/gorilla/mux"
 )
 
 func GetArtist(w http.ResponseWriter, r *http.Request) {
 	rows, err := database.DB.Query("SELECT * FROM artists")
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
-    defer rows.Close()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
 
-    var artists []artist.Artist
-    for rows.Next() {
-        var c artist.Artist
-        if err := rows.Scan(&c.ArtistId,&c.Name,&c.Genre); err != nil {
-            http.Error(w, err.Error(), http.StatusInternalServerError)
-            return
-        }
-        artists = append(artists, c)
-    }
-	
+	var artists []artist.Artist
+	for rows.Next() {
+		var c artist.Artist
+		if err := rows.Scan(&c.ArtistId, &c.Name, &c.Genre); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		artists = append(artists, c)
+	}
+
 	if err := rows.Err(); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -39,7 +40,7 @@ func GetArtist(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(artists)
 }
 
-// GetArtistByID handles GET requests to fetch a single album by its ID
+// GetArtistByID handles GET requests to fetch a single artist by its ID
 func GetArtistByID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	idStr, ok := vars["id"]
@@ -58,7 +59,7 @@ func GetArtistByID(w http.ResponseWriter, r *http.Request) {
 	err = database.DB.QueryRow(query, id).Scan(&artist.ArtistId, &artist.Name, &artist.Genre)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			http.Error(w, "Album not found", http.StatusNotFound)
+			http.Error(w, "Artist not found", http.StatusNotFound)
 		} else {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}

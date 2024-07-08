@@ -1,0 +1,438 @@
+{
+	"info": {
+		"_postman_id": "b085606f-55c3-4347-be10-228e30637326",
+		"name": "UasWebservice2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33355683"
+	},
+	"item": [
+		{
+			"name": "UserRegistration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"marklee\",\r\n    \"password_hash\" : \"fathadmin1999\",\r\n    \"role\" : \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://130.162.195.228/mhs714220012/regis",
+					"protocol": "https",
+					"host": [
+						"130",
+						"162",
+						"195",
+						"228"
+					],
+					"path": [
+						"mhs714220012",
+						"regis"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserLogin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"fathfath\",\r\n    \"password_hash\" : \"fathadmin1999\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://130.162.195.228/mhs714220012/login",
+					"protocol": "https",
+					"host": [
+						"130",
+						"162",
+						"195",
+						"228"
+					],
+					"path": [
+						"mhs714220012",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Artist",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://130.162.195.228/mhs714220012/artists",
+					"protocol": "https",
+					"host": [
+						"130",
+						"162",
+						"195",
+						"228"
+					],
+					"path": [
+						"mhs714220012",
+						"artists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ArtistByID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://130.162.195.228/mhs714220012/artists/8",
+					"protocol": "https",
+					"host": [
+						"130",
+						"162",
+						"195",
+						"228"
+					],
+					"path": [
+						"mhs714220012",
+						"artists",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ArtistPost",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhdGhmYXRoIiwiZXhwIjoxNzIwMzUzNjg1fQ.ELVha8K4uXT8QSV6bQdCxAwwo3kVfA9zTdVzmxZh9hQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"Jennie\",\r\n    \"genre\" : \"POP\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://130.162.195.228/mhs714220012/artists",
+					"protocol": "https",
+					"host": [
+						"130",
+						"162",
+						"195",
+						"228"
+					],
+					"path": [
+						"mhs714220012",
+						"artists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ArtistUpdate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhdGhmYXRoIiwiZXhwIjoxNzIwMzUzNjg1fQ.ELVha8K4uXT8QSV6bQdCxAwwo3kVfA9zTdVzmxZh9hQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"Mark\",\r\n    \"genre\" : \"Rock\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://130.162.195.228/mhs714220012/artists/8",
+					"protocol": "https",
+					"host": [
+						"130",
+						"162",
+						"195",
+						"228"
+					],
+					"path": [
+						"mhs714220012",
+						"artists",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ArtistDelete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhdGhmYXRoIiwiZXhwIjoxNzIwMzUzNjg1fQ.ELVha8K4uXT8QSV6bQdCxAwwo3kVfA9zTdVzmxZh9hQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://130.162.195.228/mhs714220012/artists/8",
+					"protocol": "https",
+					"host": [
+						"130",
+						"162",
+						"195",
+						"228"
+					],
+					"path": [
+						"mhs714220012",
+						"artists",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Album",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF6emFocmEiLCJleHAiOjE3MTcyMjk0Mzl9.c_usfUS2MBqyNrz_YsBxpmHFA8ilySS5GA2bMb39Fl0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://130.162.195.228/mhs714220012/albums",
+					"protocol": "https",
+					"host": [
+						"130",
+						"162",
+						"195",
+						"228"
+					],
+					"path": [
+						"mhs714220012",
+						"albums"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AlbumByID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://130.162.195.228/mhs714220012/albums/8",
+					"protocol": "https",
+					"host": [
+						"130",
+						"162",
+						"195",
+						"228"
+					],
+					"path": [
+						"mhs714220012",
+						"albums",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AlbumPost",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhdGhmYXRoIiwiZXhwIjoxNzIwMzUzNjg1fQ.ELVha8K4uXT8QSV6bQdCxAwwo3kVfA9zTdVzmxZh9hQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"Kick It\",\r\n    \"artist_id\" : 2,\r\n    \"price\" : 550000.00,\r\n    \"year\" : 2021\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://130.162.195.228/mhs714220012/albums",
+					"protocol": "https",
+					"host": [
+						"130",
+						"162",
+						"195",
+						"228"
+					],
+					"path": [
+						"mhs714220012",
+						"albums"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AlbumUpdate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhdGhmYXRoIiwiZXhwIjoxNzIwMzUzNjg1fQ.ELVha8K4uXT8QSV6bQdCxAwwo3kVfA9zTdVzmxZh9hQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"Solo\",\r\n    \"artist_id\" : 2,\r\n    \"price\" : 750000.00,\r\n    \"year\" : 2022\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://130.162.195.228/mhs714220012/albums/11",
+					"protocol": "https",
+					"host": [
+						"130",
+						"162",
+						"195",
+						"228"
+					],
+					"path": [
+						"mhs714220012",
+						"albums",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AlbumDelete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhdGhmYXRoIiwiZXhwIjoxNzIwMzUzNjg1fQ.ELVha8K4uXT8QSV6bQdCxAwwo3kVfA9zTdVzmxZh9hQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://130.162.195.228/mhs714220012/albums/11",
+					"protocol": "https",
+					"host": [
+						"130",
+						"162",
+						"195",
+						"228"
+					],
+					"path": [
+						"mhs714220012",
+						"albums",
+						"11"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
